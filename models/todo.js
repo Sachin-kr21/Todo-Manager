@@ -1,5 +1,5 @@
 "use strict";
-const { Model } = require("sequelize");
+const { Model,Op } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
     /**
@@ -9,6 +9,62 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+    }
+
+    static async overdue() {
+      // FILL IN HERE TO RETURN OVERDUE ITEMS
+      // retrieve items from table 
+      // return list of items where due date is less than todays date
+      try{
+        const overdues = await Todo.findAll({
+          where: {
+            dueDate:{
+              [Op.lt]: new Date()
+            }
+        
+          }
+        })
+        return overdues
+      }
+      catch(error){
+        console.log(error);
+      }
+    }
+
+    static async dueToday() {
+      // FILL IN HERE TO RETURN ITEMS DUE tODAY
+      try{
+        const overdues = await Todo.findAll({
+          where: {
+            dueDate:{
+              [Op.eq]: new Date()
+            }
+        
+          }
+        })
+        return overdues
+      }
+      catch(error){
+        console.log(error);
+      }
+    }
+
+    static async dueLater() {
+      // FILL IN HERE TO RETURN ITEMS DUE LATER
+      try{
+        const overdues = await Todo.findAll({
+          where: {
+            dueDate:{
+              [Op.gt]: new Date()
+            }
+        
+          }
+        })
+        return overdues
+      }
+      catch(error){
+        console.log(error);
+      }
     }
 
     static addTodo({ title, dueDate }) {
