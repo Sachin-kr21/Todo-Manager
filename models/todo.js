@@ -12,6 +12,14 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
 
+    static async remove(id) {
+      return this.destroy({
+        where: {
+          id,
+        },
+      });
+    }
+
     static async overdue() {
       // FILL IN HERE TO RETURN OVERDUE ITEMS
       // retrieve items from table
