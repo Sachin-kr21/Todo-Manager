@@ -13,11 +13,15 @@
         .querySelector('meta[name="csrf-token"]')
         .getAttribute("content");
         function updateTodo(id){
-            fetch(`/todos/${id}/markAsCompleted`,{
+            let completionStatus = document.getElementById(id).checked
+            
+
+            fetch(`/todos/${id}`,{
                 method :"put",
                 headers : { "Content-Type":"application/json" },
                 body : JSON.stringify({
-                    "_csrf": token
+                    "_csrf": token,
+                    completionStatus, 
                 })
             })
             .then((res)=>{
@@ -56,7 +60,7 @@
                         <input type="text" name="title" placeholder="what's next?" class="border border-gray-400 rounded w-full p-1 text-sm " required/>
                     </div>
                     <div class="flex-auto">
-                        <input type="date" name="dueDate" class="border border-gray-400 rounded w-full p-1 text-sm leading-2 "/>
+                        <input type="date" name="dueDate" class="border border-gray-400 rounded w-full p-1 text-sm leading-2 " required/>
                     </div>
                     <div class="flex-none">
                         <button type="submit" class="bg-green-600 text-white px-4 py-1 rounded font-medium mr-2 mb-2" >Add</button>
@@ -67,6 +71,7 @@
                 <%- include("todos.ejs",{duedate:"Overdue",data: overdues, countid: "count-overdue"}) %> 
                 <%- include("todos.ejs",{duedate:"Due Today",data: duetoday, countid:"count-due-today"}) %> 
                 <%- include("todos.ejs",{duedate:"Due Later",data: duelater,countid:"count-due-later"}) %> 
+                <%- include("todos.ejs",{duedate:"completed items",data: completedTodo,countid:"count-completed-todos"}) %> 
             </div>
         </div>
     </div>

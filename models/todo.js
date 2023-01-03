@@ -20,6 +20,22 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
+    static async completedtodos() {
+      // FILL IN HERE TO RETURN OVERDUE ITEMS
+      // retrieve items from table
+      // return list of items where due date is less than todays date
+      try {
+        const completedTodos = await Todo.findAll({
+          where: {
+            completed: true,
+          },
+        });
+        return completedTodos;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     static async overdue() {
       // FILL IN HERE TO RETURN OVERDUE ITEMS
       // retrieve items from table
@@ -30,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
             dueDate: {
               [Op.lt]: new Date(),
             },
+            completed: false,
           },
         });
         return overdues;
@@ -46,6 +63,7 @@ module.exports = (sequelize, DataTypes) => {
             dueDate: {
               [Op.eq]: new Date(),
             },
+            completed: false,
           },
         });
         return overdues;
@@ -62,6 +80,7 @@ module.exports = (sequelize, DataTypes) => {
             dueDate: {
               [Op.gt]: new Date(),
             },
+            completed: false,
           },
         });
         return overdues;
@@ -76,6 +95,12 @@ module.exports = (sequelize, DataTypes) => {
 
     static getTodos() {
       return this.findAll();
+    }
+
+    setCompletionStatus(completionStatus) {
+      return this.update({
+        completed: completionStatus,
+      });
     }
 
     markAsCompleted() {
