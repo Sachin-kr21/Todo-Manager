@@ -11,6 +11,9 @@ const session = require("express-session");
 const LocalStrategy = require("passport-local");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const flash = require("connect-flash");
+app.set("views", path.join(__dirname, "views"));
+app.use(flash());
 
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
@@ -26,6 +29,11 @@ app.use(
   })
 );
 
+app.use(function (request, response, next) {
+  response.locals.messages = request.flash();
+  next();
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -37,16 +45,17 @@ passport.use(
     },
     (username, password, done) => {
       User.findOne({ where: { email: username } })
-        .then(async (user) => {
+        .then(async function (user) {
           const result = await bcrypt.compare(password, user.password);
           if (result) {
             return done(null, user);
           } else {
-            return done("Invalid Passoowrd");
+            return done(null, false, { message: "Invalid password" });
           }
         })
         .catch((error) => {
-          return error;
+          console.log(error);
+          return done(null, false, { message: "Invalid email" });
         });
     }
   )
@@ -141,12 +150,6 @@ app.get("/todos/:id", async function (request, response) {
 });
 
 app.post("/users", async (request, response) => {
-  // if(request.body.password===""){
-  //   request.flash("error", "password required");
-  //   response.redirect("/signup")
-  // }
-  // const hashedPwd = await bcrypt.hash(request.body.password, saltRounds);
-  // console.log(hashedPwd);
   const hashedPwd = await bcrypt.hash(request.body.password, saltRounds);
   console.log("password is", hashedPwd);
   try {
@@ -164,6 +167,10 @@ app.post("/users", async (request, response) => {
     });
   } catch (error) {
     console.log(error);
+    for (let i = 0; i < error.errors.length; i++) {
+      request.flash("error", error.errors[i].message);
+    }
+    response.redirect("/signup");
   }
 });
 
@@ -171,8 +178,10 @@ app.post(
   "/session",
   passport.authenticate("local", {
     failureRedirect: "/login",
+    failureFlash: true,
   }),
   (request, response) => {
+    console.log(request.user);
     response.redirect("/todos");
   }
 );
@@ -190,7 +199,16 @@ app.post(
       });
       return response.redirect("/todos");
     } catch (error) {
-      console.log(error);
+      if (error.errors) {
+        for (let i = 0; i < error.errors.length; i++) {
+          request.flash("error", error.errors[i].message);
+        }
+      }
+      if (error.parameters && error.parameters[1] === "Invalid date") {
+        request.flash("error", error.parameters[1]);
+      }
+
+      return response.redirect("/todos");
     }
   }
 );
@@ -207,6 +225,7 @@ app.put(
       return response.json(updatedTodo);
     } catch (error) {
       console.log(error);
+
       return response.status(422).json(error);
     }
   }
