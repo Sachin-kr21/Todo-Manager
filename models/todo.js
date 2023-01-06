@@ -9,13 +9,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     // eslint-disable-next-line no-unused-vars
     static associate(models) {
-      // define association here
+      Todo.belongsTo(models.User, {
+        foreignKey: "userId",
+      });
     }
 
-    static async remove(id) {
+    static async remove(id, userId) {
       return this.destroy({
         where: {
           id,
+          userId,
         },
       });
     }
@@ -36,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
 
-    static async overdue() {
+    static async overdue(userId) {
       // FILL IN HERE TO RETURN OVERDUE ITEMS
       // retrieve items from table
       // return list of items where due date is less than todays date
@@ -47,6 +50,7 @@ module.exports = (sequelize, DataTypes) => {
               [Op.lt]: new Date(),
             },
             completed: false,
+            userId,
           },
         });
         return overdues;
@@ -55,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
 
-    static async dueToday() {
+    static async dueToday(userId) {
       // FILL IN HERE TO RETURN ITEMS DUE tODAY
       try {
         const overdues = await Todo.findAll({
@@ -64,6 +68,7 @@ module.exports = (sequelize, DataTypes) => {
               [Op.eq]: new Date(),
             },
             completed: false,
+            userId,
           },
         });
         return overdues;
@@ -72,7 +77,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
 
-    static async dueLater() {
+    static async dueLater(userId) {
       // FILL IN HERE TO RETURN ITEMS DUE LATER
       try {
         const overdues = await Todo.findAll({
@@ -81,6 +86,7 @@ module.exports = (sequelize, DataTypes) => {
               [Op.gt]: new Date(),
             },
             completed: false,
+            userId,
           },
         });
         return overdues;
@@ -89,17 +95,23 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
 
-    static addTodo({ title, dueDate }) {
-      return this.create({ title: title, dueDate: dueDate, completed: false });
+    static addTodo({ title, dueDate, userId }) {
+      return this.create({
+        title: title,
+        dueDate: dueDate,
+        completed: false,
+        userId,
+      });
     }
 
     static getTodos() {
       return this.findAll();
     }
 
-    setCompletionStatus(completionStatus) {
+    setCompletionStatus(completionStatus, userId) {
       return this.update({
         completed: completionStatus,
+        userId,
       });
     }
 
