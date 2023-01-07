@@ -79,11 +79,14 @@ passport.deserializeUser((id, done) => {
 app.set("view engine", "ejs");
 
 app.get("/", async (request, response) => {
-  response.render("index", {
-    title: "Todo application",
-
-    csrfToken: request.csrfToken(),
-  });
+  if (request.user != undefined) {
+    response.redirect("/todos");
+  } else {
+    response.render("index", {
+      title: "Todo application",
+      csrfToken: request.csrfToken(),
+    });
+  }
 });
 
 app.get(
@@ -104,6 +107,8 @@ app.get(
         duetoday,
         completedTodo,
         csrfToken: request.csrfToken(),
+        fname: request.user.firstName,
+        lname: request.user.lastName,
       });
     } else {
       response.json({ allTodos, overdues, duelater, duetoday });
@@ -112,14 +117,28 @@ app.get(
 );
 
 app.get("/signup", (request, response) => {
-  response.render("signup", {
-    title: "Signup",
-    csrfToken: request.csrfToken(),
-  });
+  // console.log("1111111111112222111",request.body.user)
+  if (request.user != undefined) {
+    response.redirect("/todos");
+  } else {
+    console.log(request.body.user);
+    response.render("signup", {
+      title: "Signup",
+      csrfToken: request.csrfToken(),
+    });
+  }
 });
 
 app.get("/login", (request, response) => {
-  response.render("login", { title: "login", csrfToken: request.csrfToken() });
+  if (request.user != undefined) {
+    response.redirect("/todos");
+  } else {
+    console.log(request.body.user);
+    response.render("login", {
+      title: "login",
+      csrfToken: request.csrfToken(),
+    });
+  }
 });
 
 app.get("/signout", (request, response, next) => {

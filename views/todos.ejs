@@ -22,6 +22,7 @@
                 body : JSON.stringify({
                     "_csrf": token,
                     completionStatus, 
+                    
                 })
             })
             .then((res)=>{
@@ -54,16 +55,22 @@
         <div class="col-start-3 col-span-2">
             <%- include('header.ejs') %> 
             <a href="/signout">signout</a>
-
+            
             <% if(messages && messages.error && messages.error.length > 0)  { %>
                 <% for(var i=0; i<messages.error.length; i++) { %>
                         <li> <%= messages.error[i] %></li>
                 <% } %>
               <% } %>
-
+            <br>
+            <b><%= fname   %> 
+                <%= lname   %> </b>
+            
+            
+            
+             
             <form action="/todos" method="post">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
-
+                
                 <div class="flex gap-2 py-4">
                     <div class="flex-auto">
                         <input type="text" name="title" placeholder="what's next?" class="border border-gray-400 rounded w-full p-1 text-sm " />

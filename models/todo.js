@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
-    static async completedtodos() {
+    static async completedtodos(userId) {
       // FILL IN HERE TO RETURN OVERDUE ITEMS
       // retrieve items from table
       // return list of items where due date is less than todays date
@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         const completedTodos = await Todo.findAll({
           where: {
             completed: true,
+            userId,
           },
         });
         return completedTodos;
