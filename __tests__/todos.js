@@ -27,6 +27,9 @@ describe("Todo Application", function () {
     await db.sequelize.sync({ force: true });
     server = app.listen(4000, () => {});
     agent = request.agent(server);
+
+    
+  
   });
 
   afterAll(async () => {
@@ -50,6 +53,7 @@ describe("Todo Application", function () {
     });
     expect(res.statusCode).toBe(302);
   });
+
 
   test("Sign out", async () => {
     let res = await agent.get("/todos");
@@ -182,4 +186,72 @@ describe("Todo Application", function () {
     const parsedDeletedResponse = JSON.parse(deletedResponse.text);
     expect(parsedDeletedResponse.success).toBe(true);
   });
+
+  test("tests to verify userA cannot update or delete userB's todo", async () => {
+    let agent = request.agent(server);
+    await login(agent, "user.a@test.com", "12345678");
+    let res = await agent.get("/todos");
+    let csrfToken = extractCsrfToken(res);
+    await agent.post("/todos").send({
+      title: "Buy milk",
+      dueDate: new Date().toISOString(),
+      completed: false,
+      _csrf: csrfToken,
+    });
+
+    const groupedTodosResponse = await agent
+      .get("/todos")
+      .set("Accept", "application/json");
+    const parsedGroupedResponse = JSON.parse(groupedTodosResponse.text);
+    const dueTodayCount = parsedGroupedResponse.duetoday.length;
+    const latestTodo = parsedGroupedResponse.duetoday[dueTodayCount - 1];
+
+    res = await agent.get("/todos");
+    csrfToken = extractCsrfToken(res);
+
+    let markCompleteResponse = await agent
+      .put(`/todos/${latestTodo.id}`)
+      .send({
+        _csrf: csrfToken,
+        completionStatus: true,
+      });
+
+    const parsedUpdateResponse = JSON.parse(markCompleteResponse.text);
+    expect(parsedUpdateResponse.completed).toBe(true);
+    console.log("user a",)
+
+    res = await agent.get("/signout");
+
+
+
+    agent = request.agent(server);
+    res = await agent.get("/signup");
+    csrfToken = extractCsrfToken(res);
+    res = await agent.post("/users").send({
+      firstName: "Test",
+      lastName: "User B",
+      email: "user.b@test.com",
+      password: "12345678",
+      _csrf: csrfToken,
+    });
+   
+    
+
+    res = await agent.get("/todos");
+    csrfToken = extractCsrfToken(res);
+
+    markCompleteResponse = await agent
+      .put(`/todos/${latestTodo.id}`)
+      .send({
+        _csrf: csrfToken,
+        completionStatus: true,
+      });
+
+      expect(markCompleteResponse.statusCode).toBe(200);
+
+
+  })
+
+
+
 });

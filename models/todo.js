@@ -110,10 +110,14 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     setCompletionStatus(completionStatus, userId) {
+      
+      
       return this.update({
         completed: completionStatus,
-        userId,
-      });
+      
+      },{where:{
+        userId
+      }});
     }
 
     markAsCompleted() {
