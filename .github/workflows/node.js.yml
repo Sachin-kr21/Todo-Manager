@@ -27,11 +27,7 @@ jobs:
       - name: Run linting
         run: npm run lint || exit 1  
 
-      - name: Notify on failure
-        if: failure()
-        run: |
-          curl -X POST -H "Content-Type: application/json" -d "{\"content\":\"Pipeline Failed\nWorkflow: '${{ github.workflow }}'\nBranch: '${{ github.ref }}'\nCommit: '${{ github.sha }}'\nAuthor: '${{ github.actor }}'\nError: '${{ job.status }}'\"}" ${{ secrets.DISCORD_WEBHOOK_URL }}
-
+    
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -46,7 +42,7 @@ jobs:
       - name: Run tests
         run: |
           npm test
-          if [ $? -ne 0 ]; then exit 1; fi 
+          
 
   deploy:
     name: Deploy
