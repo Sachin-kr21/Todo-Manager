@@ -27,7 +27,6 @@ jobs:
       - name: Run linting
         run: npm run lint || exit 1  
 
-    
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -41,13 +40,12 @@ jobs:
         run: npm ci
       - name: Run tests
         run: |
-          npm test
-          
+          npm test || exit 1
 
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    needs: [] 
+    needs: [test]
     steps:
       - name: Deploy using ssh
         uses: appleboy/ssh-action@master
@@ -63,3 +61,17 @@ jobs:
             git status
             npm install --only=prod || exit 1  
 
+  notify-discord:
+    name: Notify Discord
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    steps:
+      - name: Capture deployment errors
+        id: capture-deployment-errors
+        run: echo "::set-output name=errors::$(git status --porcelain)"
+
+      - name: Notify on Discord
+        uses: Ilshidur/action-slackify@v2
+        with:
+          args: 'Deployment errors: ${{ steps.capture-deployment-errors.outputs.errors }}'
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
