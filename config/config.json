@@ -7,7 +7,11 @@
     "dialect": "postgres"
   },
   "test": {
-    "use_env_variable": "TEST_URL",
+    "username": "sachinkumar",
+    "password": "postgres630",
+    "database": "sachinkumar_todo_db",
+    "host": "185.31.41.42",
+    "post": "5432",
     "dialect": "postgres"
   },
   "production": {
