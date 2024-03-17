@@ -7,9 +7,6 @@
     "dialect": "postgres"
   },
   "test": {
-    "username": "postgres",
-    "password": "ubuntu630",
-    "database": "wd-todo-dev",
     "use_env_variable": "TEST_URL",
     "dialect": "postgres"
   },
