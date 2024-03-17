@@ -86,10 +86,5 @@ jobs:
       
 
 
-    steps:
-      - name: Notify Discord on failure
-        if: failure()
-        uses: distributhor/discord-action@v2
-        with:
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          message: "CI/CD Pipeline failed. Check the workflow logs for details."
+
+
