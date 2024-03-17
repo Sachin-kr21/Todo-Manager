@@ -7,7 +7,11 @@
     "dialect": "postgres"
   },
   "test": {
-    "use_env_variable": "TEST_DB_URL",
+    "username": "todoapplication",
+    "password": "(Rohit50)",
+    "database": "todoapplication_testdb",
+    "host": "185.31.41.42",
+    "port": 5432,
     "dialect": "postgres"
   },
   "production": {
