@@ -1,4 +1,4 @@
-name: WebApp CI/CD
+name: CI/CD Integration
 
 on:
   push:
