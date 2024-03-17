@@ -11,8 +11,8 @@
     "prepare": "husky install",
     "build": "webpack --mode production",
     "lint": "eslint ."
-  },
-  "lint-staged": {
+    },
+    "lint-staged": {
     "*.js": [
       "eslint",
       "prettier --write ."
