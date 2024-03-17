@@ -1,12 +1,15 @@
 {
   "development": {
     "username": "postgres",
-    "password": "postgres630",
+    "password": "ubuntu630",
     "database": "wd-todo-dev",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
+    "username": "postgres",
+    "password": "ubuntu630",
+    "database": "wd-todo-dev",
     "use_env_variable": "TEST_URL",
     "dialect": "postgres"
   },
