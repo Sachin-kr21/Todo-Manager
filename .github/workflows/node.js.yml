@@ -45,7 +45,7 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    needs: test
+    needs: [test]
     steps:
       - name: Deploy using ssh
         uses: appleboy/ssh-action@master
@@ -64,26 +64,16 @@ jobs:
   notify-discord:
     name: Notify Discord
     runs-on: ubuntu-latest
-    needs : [deploy]
+    needs: [deploy]
     if: always()
     steps:
-      - name: Check test status
-        id: check_test_status
+      - name: Check job status
+        id: check_status
         run: echo ::set-output name=status::failure
-        if: failure()
-
-      - name: Check validation status
-        id: check_validation_status
-        run: echo ::set-output name=status::failure
-        if: failure()
-
-      - name: Check deployment status
-        id: check_deploy_status
-        run: echo ::set-output name=status::failure
-        if: failure()
-
+        if: ${{ failure() }}
+        
       - name: Send Discord notification
-        if: steps.check_test_status.outputs.status == 'failure' || steps.check_validation_status.outputs.status == 'failure' || steps.check_deploy_status.outputs.status == 'failure'
+        if: steps.check_status.outputs.status == 'failure'
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{
             "username": "CI/CD Bot",
@@ -91,8 +81,8 @@ jobs:
             "content": "CI/CD Pipeline Results",
             "embeds": [
               {
-                "title": "CI/CD Pipeline Failure",
-                "description": "One or more jobs in the CI/CD pipeline have failed.",
+                "title": "Validation, Testing, or Deployment Failed",
+                "description": "One of the jobs in the CI/CD pipeline has failed.",
                 "color": 16711680
               }
             ]
