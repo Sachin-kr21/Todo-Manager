@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: validate-code
     env:
-      TEST_URL: ${{ secrets.TEST_URL }}
+      TEST_DB_URL: ${{ secrets.TEST_DB_URL }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
