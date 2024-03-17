@@ -64,9 +64,25 @@ jobs:
   notify-discord:
     name: Notify Discord
     runs-on: ubuntu-latest
-    needs: [deploy]
+    if: always()
     steps:
+      - name: Check test status
+        id: check_test_status
+        run: echo ::set-output name=status::failure
+        if: failure()
+
+      - name: Check validation status
+        id: check_validation_status
+        run: echo ::set-output name=status::failure
+        if: failure()
+
+      - name: Check deployment status
+        id: check_deploy_status
+        run: echo ::set-output name=status::failure
+        if: failure()
+
       - name: Send Discord notification
+        if: steps.check_test_status.outputs.status == 'failure' || steps.check_validation_status.outputs.status == 'failure' || steps.check_deploy_status.outputs.status == 'failure'
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{
             "username": "CI/CD Bot",
@@ -74,29 +90,8 @@ jobs:
             "content": "CI/CD Pipeline Results",
             "embeds": [
               {
-                "title": "Validation, Testing, and Deployment Summary",
-                "fields": [
-                  {
-                    "name": "Validation",
-                    "value": "Linting passed successfully.",
-                    "inline": true
-                  },
-                  {
-                    "name": "Testing",
-                    "value": "Unit tests passed successfully.",
-                    "inline": true
-                  },
-                  {
-                    "name": "Deployment",
-                    "value": "Deployment completed successfully.",
-                    "inline": true
-                  }
-                ],
-                "color": 65280
-              },
-              {
-                "title": "Deployment Errors",
-                "description": "```${{ steps.deploy.outputs.errors }}```",
+                "title": "CI/CD Pipeline Failure",
+                "description": "One or more jobs in the CI/CD pipeline have failed.",
                 "color": 16711680
               }
             ]
