@@ -1,0 +1,8 @@
+services:
+  - name: Todo App
+    plan: free
+    env: node
+    buildCommand: npm install && NODE_ENV=production npx sequelize-cli db:migrate 
+    startCommand: node index.js
+    github:
+      branch: master
