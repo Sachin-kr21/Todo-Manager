@@ -11,10 +11,10 @@
     "dialect": "postgres"
   },
   "production": {
-    "username": "wad_201_database_user",
-    "password": "5iWJ1ob1E3Vceohj2B5OtzMnUWJ3ecnG",
-    "database": "wad_201_database",
-    "host": "dpg-cnfil9a0si5c739melkg-a",
+    "username": "sachinkumar",
+    "password": "postgres630",
+    "database": "sachinkumar_todo_db",
+    "host": "185.31.41.42",
     "port": 5432,
     "dialect": "postgres"
   }
