@@ -11,7 +11,7 @@
     "dialect": "postgres"
   },
   "production": {
-    "username": "sachinkumar_user1",
+    "username": "sachinkumar",
     "password": "postgres630",
     "database": "sachinkumar_todo_dep_db",
     "host": "185.31.41.42",
