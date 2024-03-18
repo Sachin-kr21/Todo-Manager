@@ -15,7 +15,7 @@
     "password": "5iWJ1ob1E3Vceohj2B5OtzMnUWJ3ecnG",
     "database": "wad-201-database",
     "host": "dpg-cnfil9a0si5c739melkg-a",
-    "port": 5432,
+    "port": "oregon-postgres.render.com",
     "dialect": "postgres"
   }
 }
