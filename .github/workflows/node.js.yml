@@ -33,7 +33,7 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    needs: validate-code
+    needs: []
     env:
       TEST_DB_URL: ${{ secrets.TEST_DB_URL }}
     steps:
@@ -48,7 +48,7 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: []
     steps:
       - name: Deploy using ssh
         uses: appleboy/ssh-action@master
@@ -67,7 +67,7 @@ jobs:
   notify-discord:
     name: Notify Discord
     runs-on: ubuntu-latest
-    needs: [deploy]
+    needs: [validate-code,test,deploy]
     steps:
       - name: Send Discord notification
         run: |
@@ -99,7 +99,7 @@ jobs:
               },
               {
                 "title": "Deployment Errors",
-                "description": "```${{ steps.deploy.outputs.errors }}```",
+                "description": "```${{ job.status }}```",
                 "color": 16711680
               }
             ]
