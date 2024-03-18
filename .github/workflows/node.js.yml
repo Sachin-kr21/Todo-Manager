@@ -1,3 +1,6 @@
+
+
+User
 name: CI/CD Integration
 
 on:
@@ -65,15 +68,8 @@ jobs:
     name: Notify Discord
     runs-on: ubuntu-latest
     needs: [deploy]
-    if: always()
     steps:
-      - name: Check job status
-        id: check_status
-        run: echo ::set-output name=status::failure
-        if: ${{ failure() }}
-        
       - name: Send Discord notification
-        if: steps.check_status.outputs.status == 'failure'
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{
             "username": "CI/CD Bot",
@@ -81,8 +77,29 @@ jobs:
             "content": "CI/CD Pipeline Results",
             "embeds": [
               {
-                "title": "Validation, Testing, or Deployment Failed",
-                "description": "One of the jobs in the CI/CD pipeline has failed.",
+                "title": "Validation, Testing, and Deployment Summary",
+                "fields": [
+                  {
+                    "name": "Validation",
+                    "value": "Linting passed successfully.",
+                    "inline": true
+                  },
+                  {
+                    "name": "Testing",
+                    "value": "Unit tests passed successfully.",
+                    "inline": true
+                  },
+                  {
+                    "name": "Deployment",
+                    "value": "Deployment completed successfully.",
+                    "inline": true
+                  }
+                ],
+                "color": 65280
+              },
+              {
+                "title": "Deployment Errors",
+                "description": "```${{ steps.deploy.outputs.errors }}```",
                 "color": 16711680
               }
             ]
