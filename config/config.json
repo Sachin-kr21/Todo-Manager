@@ -7,13 +7,13 @@
     "dialect": "postgres"
   },
   "test": {
-    "use_env_variable": "TEST_DB_UR",
+    "use_env_variable": "TEST_DB_URL",
     "dialect": "postgres"
   },
   "production": {
     "username": "sachinkumar",
     "password": "postgres630",
-    "database": "sachinkumar_todo_dep_",
+    "database": "sachinkumar_todo_dep_db",
     "host": "185.31.41.42",
     "port": 5432,
     "dialect": "postgres"

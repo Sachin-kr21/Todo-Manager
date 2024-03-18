@@ -117,7 +117,6 @@ jobs:
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{
             "username": "CI/CD Bot",
-            "avatar_url": "https://example.com/avatar.png",
             "content": "CI/CD Pipeline Results",
             "embeds": [
               {
