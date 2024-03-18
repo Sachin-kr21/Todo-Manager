@@ -11,7 +11,11 @@
     "dialect": "postgres"
   },
   "production": {
-    "use_env_variable": "postgres://wad_201_database_user:5iWJ1ob1E3Vceohj2B5OtzMnUWJ3ecnG@dpg-cnfil9a0si5c739melkg-a.oregon-postgres.render.com/wad_201_database",
+    "username": "wad_201_database_user",
+    "password": "5iWJ1ob1E3Vceohj2B5OtzMnUWJ3ecnG",
+    "database": "wad_201_database",
+    "host": "dpg-cnfil9a0si5c739melkg-a",
+    "port": 5432,
     "dialect": "postgres"
   }
 }
