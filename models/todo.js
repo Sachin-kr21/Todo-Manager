@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     // eslint-disable-next-line no-unused-vars
     static associate(models) {
-        
+        kkk
     }
 
     static async remove(id, userId) {
