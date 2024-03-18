@@ -38,7 +38,7 @@ jobs:
               "content": "CI/CD Pipeline Results",
               "embeds": [
                 {
-                  "title": "Validation Failure",
+                  "title": "Validation Status",
                   "description": "```${{ job.status }}```",
                   "color": 16711680
                 }
@@ -68,7 +68,7 @@ jobs:
             "content": "CI/CD Pipeline Results",
             "embeds": [
               {
-                "title": "Test Failure",
+                "title": "Test Status",
                 "description": "```${{ job.status }}```",
                 "color": 16711680
               }
@@ -101,7 +101,7 @@ jobs:
               "content": "CI/CD Pipeline Results",
               "embeds": [
                 {
-                  "title": "Deployment Failure",
+                  "title": "Deployment Status",
                   "description": "```${{ job.status }}```",
                   "color": 16711680
                 }
@@ -141,8 +141,8 @@ jobs:
                 "color": 65280
               },
               {
-                "title": "Deployment Errors",
-                "description": "```${{ job.status }}```",
+                "title": "Workflow Status",
+                "description": "No Failures",
                 "color": 16711680
               }
             ]
