@@ -15,7 +15,7 @@
     "password": "5iWJ1ob1E3Vceohj2B5OtzMnUWJ3ecnG",
     "database": "wad_201_database",
     "host": "dpg-cnfil9a0si5c739melkg-a",
-    "port": "5432",
+    "port": 5432,
     "dialect": "postgres"
   }
 }
