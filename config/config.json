@@ -13,7 +13,7 @@
   "production": {
     "username": "sachinkumar",
     "password": "postgres630",
-    "database": "sachinkumar_todo_dep_db",
+    "database": "sachinkumar_todo_db",
     "host": "185.31.41.42",
     "port": 5432,
     "dialect": "postgres"
