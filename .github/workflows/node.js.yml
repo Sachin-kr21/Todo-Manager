@@ -46,6 +46,7 @@ jobs:
           npm test || exit 1
           - name: Send Discord notification
           run: |
+            echo "Workflow Name: ${{ github.workflow }}"
             curl -X POST -H 'Content-type: application/json' --data '{
               "username": "CI/CD Bot",
               "avatar_url": "https://example.com/avatar.png",
