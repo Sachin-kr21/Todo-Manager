@@ -46,20 +46,21 @@ jobs:
           npm test || exit 1
 
       - name: Send Discord notification
+        if: failure()
         run: |
-            echo "Workflow Name: ${{ github.workflow }}"
-            curl -X POST -H 'Content-type: application/json' --data '{
-              "username": "CI/CD Bot",
-              "avatar_url": "https://example.com/avatar.png",
-              "content": "CI/CD Pipeline Results",
-              "embeds": [
-                {
-                  "title": "Deployment Errors",
-                  "description": "```${{ job.status }}```",
-                  "color": 16711680
-                }
-              ]
-            }' ${{ secrets.DISCORD_WEBHOOK_URL }}
+          echo "Workflow Name: ${{ github.workflow }}"
+          curl -X POST -H 'Content-type: application/json' --data '{
+            "username": "CI/CD Bot",
+            "avatar_url": "https://example.com/avatar.png",
+            "content": "CI/CD Pipeline Results",
+            "embeds": [
+              {
+                "title": "Deployment Errors",
+                "description": "```${{ job.status }}```",
+                "color": 16711680
+              }
+            ]
+          }' ${{ secrets.DISCORD_WEBHOOK_URL }}
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
