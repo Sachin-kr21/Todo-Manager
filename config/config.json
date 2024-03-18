@@ -14,7 +14,7 @@
     "username": "sachinkumar",
     "password": "postgres630",
     "database": "sachinkumar_todo_db",
-    "host": "185.31.41.42",
+    "host": "2a00:b6e0:1:102:10::1",
     "port": 5432,
     "dialect": "postgres"
   }
