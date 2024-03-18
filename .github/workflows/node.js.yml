@@ -29,6 +29,21 @@ jobs:
 
       - name: Run linting
         run: npm run lint || exit 1  
+      
+      - name: Send Discord notification
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{
+              "username": "ERROR",
+              "content": "CI/CD Pipeline Results",
+              "embeds": [
+                {
+                  "title": "Validation Failure",
+                  "description": "```${{ job.status }}```",
+                  "color": 16711680
+                }
+              ]
+            }' ${{ secrets.DISCORD_WEBHOOK_URL }}
 
   test:
     name: Test
@@ -48,14 +63,12 @@ jobs:
       - name: Send Discord notification
         if: failure()
         run: |
-          echo "Workflow Name: ${{ github.workflow }}"
           curl -X POST -H 'Content-type: application/json' --data '{
-            "username": "CI/CD Bot",
-            "avatar_url": "https://example.com/avatar.png",
+            "username": "ERROR",
             "content": "CI/CD Pipeline Results",
             "embeds": [
               {
-                "title": "Test Failure Workflow Name: ${{ github.workflow }}",
+                "title": "Test Failure",
                 "description": "```${{ job.status }}```",
                 "color": 16711680
               }
@@ -78,7 +91,22 @@ jobs:
             echo "Current directory: $(pwd)"
             git pull origin master
             git status
-            npm install --only=prod || exit 1  
+            npm install --only=prod || exit 1
+
+      - name: Send Discord notification
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{
+              "username": "ERROR",
+              "content": "CI/CD Pipeline Results",
+              "embeds": [
+                {
+                  "title": "Deployment Failure",
+                  "description": "```${{ job.status }}```",
+                  "color": 16711680
+                }
+              ]
+            }' ${{ secrets.DISCORD_WEBHOOK_URL }}
 
   notify-discord:
     name: Notify Discord
