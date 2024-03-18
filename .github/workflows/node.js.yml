@@ -55,7 +55,7 @@ jobs:
             "content": "CI/CD Pipeline Results",
             "embeds": [
               {
-                "title": "Deployment Errors",
+                "title": "Test Failure Workflow Name: ${{ github.workflow }}",
                 "description": "```${{ job.status }}```",
                 "color": 16711680
               }
