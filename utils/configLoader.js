@@ -4,8 +4,14 @@ const fs = require('fs');
 const path = require('path');
 
 const env = process.env.NODE_ENV || 'development';
-const configFile = path.resolve(__dirname,  "../config/config.json");
-let config = JSON.parse(fs.readFileSync(configFile, 'utf-8'))[env];
+const configFile = path.resolve(__dirname, '../config/config.json');
+let config = {};
+
+try {
+  config = JSON.parse(fs.readFileSync(configFile, 'utf-8'))[env];
+} catch (err) {
+  console.error('Error loading config:', err.message);
+}
 
 // Replace variables in config.json with environment variables from .env
 config = Object.keys(config).reduce((acc, key) => {
@@ -19,6 +25,6 @@ config = Object.keys(config).reduce((acc, key) => {
   return acc;
 }, {});
 
-console.log(config);
+console.log('Final config:', config);
 
 module.exports = config;
