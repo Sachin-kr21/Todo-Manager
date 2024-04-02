@@ -8,12 +8,18 @@ const configFile = path.resolve(__dirname, '../config/config.json');
 let config = {};
 
 try {
-  config = JSON.parse(fs.readFileSync(configFile, 'utf-8'))[env];
+  const rawConfig = fs.readFileSync(configFile, 'utf-8');
+  config = JSON.parse(rawConfig)[env];
 } catch (err) {
   console.error('Error loading config:', err.message);
+  process.exit(1); // Exit the process if config loading fails
 }
 
-// Replace variables in config.json with environment variables from .env
+if (!config) {
+  console.error('Config is null or undefined.');
+  process.exit(1); // Exit the process if config is null or undefined
+}
+
 config = Object.keys(config).reduce((acc, key) => {
   if (typeof config[key] === 'string') {
     acc[key] = config[key].replace(/\${(\w+)}/g, (match, variable) => {
