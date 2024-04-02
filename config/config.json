@@ -7,6 +7,10 @@
     "port": "${DEV_PORT}",
     "dialect": "postgres"
   },
+  "test":{
+    "use_env_variable": "TEST_DB_URL",
+    "dialect": "postgres"
+  },
   "production": {
     "username": "${PROD_USERNAME}",
     "password": "${PROD_PASSWORD",
