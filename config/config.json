@@ -1,21 +1,18 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "postgres630",
-    "database": "wd-todo-dev",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
-  },
-  "test": {
-    "use_env_variable": "",
+    "username": "${DEV_USERNAME}",
+    "password": "${DEV_PASSWORD}",
+    "database": "${DEV_NAME}",
+    "host": "${DEV_HOST}",
+    "port": "${DEV_PORT}",
     "dialect": "postgres"
   },
   "production": {
-    "username": "sachinkumar",
-    "password": "postgres630",
-    "database": "sachinkumar_deploy_db",
-    "host": "185.31.41.42",
-    "port": 5432,
+    "username": "${PROD_USERNAME}",
+    "password": "${PROD_PASSWORD",
+    "database": "${PROD_NAME}",
+    "host": "${PROD_HOST}",
+    "port": "${PROD_PORT}",
     "dialect": "postgres"
   }
 }

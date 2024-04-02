@@ -1,5 +1,6 @@
 const app = require("./app");
 
-app.listen(8101, () => {
-  console.log("Started express server at port 8101");
+const port = process.env.NODE_ENV == "development" ? process.env.DEV_PORT : process.env.PROD_PORT 
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
