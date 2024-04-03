@@ -15,7 +15,7 @@
     "password": "postgres630",
     "database": "sachinkumar_deploy_db",
     "host": "185.31.41.42",
-    "port": 5432,
+    "port": 8101,
     "dialect": "postgres"
   }
 }
