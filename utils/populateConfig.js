@@ -23,6 +23,7 @@ const config = {
     dialect: 'postgres',
   },
 };
+//comment
 
 fs.writeFileSync('config/config.json', JSON.stringify(config, null, 2));
 
