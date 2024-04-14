@@ -68,25 +68,22 @@ jobs:
               }
             ]
           }' ${{ secrets.DISCORD_WEBHOOK_URL }}
-  deploy:
-    name: Deploy
+  build-and-deploy:
+    name: Build and Push Docker Img
     runs-on: ubuntu-latest
     needs: test
     steps:
-      - name: Deploy using ssh
-        uses: appleboy/ssh-action@master
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: |
-            cd www/Todo-Manager
-            echo "Current directory: $(pwd)"
-            git pull origin master
-            git status
-            npm install --only=prod || exit 1
-
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker image.
+        run: docker build -t sachinkumar/todo:todo .
+      - name: Push Docker image
+        run: docker push sachinkumar/todo:todo
       - name: Send Discord notification
         if: failure()
         run: |
@@ -105,7 +102,7 @@ jobs:
   notify-discord:
     name: Notify Discord
     runs-on: ubuntu-latest
-    needs: deploy
+    needs: build-and-deploy
     steps:
       - name: Send Discord notification
         run: |

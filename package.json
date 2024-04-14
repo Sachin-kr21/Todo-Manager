@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev":"NODE_ENV=development node index.js",
     "start:dev": "nodemon -e js,ejs",
-    "start": "NODE_ENV=production node index.js",
+    "start": "node index.js",
     "test": "NODE_ENV=test jest --detectOpenHandles",
     "build": "webpack --mode production",
     "lint": "eslint ."
