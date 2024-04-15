@@ -167,7 +167,7 @@ app.get("/todos/:id", async function (request, response) {
     return response.status(422).json(error);
   }
 });
-
+// comment
 app.post("/users", async (request, response) => {
   const hashedPwd = await bcrypt.hash(request.body.password, saltRounds);
   console.log("password is", hashedPwd);
