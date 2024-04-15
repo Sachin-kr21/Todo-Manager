@@ -3,7 +3,7 @@ name: CI/CD Integration
 on:
   push:
     branches:
-      - master
+      - feature-test
 
 
 jobs:
