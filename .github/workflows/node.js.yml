@@ -82,10 +82,10 @@ jobs:
           password: docker630
       - name: Build Docker image.
         run: docker build -t sachinkr03/todoapp:todo .
-      - name: Executing Docker image 
-        run: docker-compose up
-      # - name: Push Docker image
-      #   run: docker push sachinkr03/todoapp:todo
+      # - name: Executing Docker image 
+      #   run: docker-compose up
+      - name: Push Docker image
+        run: docker push sachinkr03/todoapp:todo
 
       - name: Send Discord notification
         if: failure()
